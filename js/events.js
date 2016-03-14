@@ -8,7 +8,7 @@
         $(".counter").after("<div class='todo' id='" + currentToDo.id + "'>" +
             "<input type='checkbox' /><div class='description'><p class='todo-description'>" + currentToDo.description +
             "</p><hr>" +
-            "<p class='time-added'>Added " + moment(currentToDo.addedOn).fromNow() + "</p></div></div><hr>");
+            "<p class='time-added'>Added " + moment(currentToDo.addedOn).fromNow() + "</p></div><hr></div>");
         var toDoDiv = $("div#" + currentToDo.id);
         if (addedToDos[index].completed) {
             toDoDiv.children("input[type=checkbox]").prop("checked", true);
@@ -96,11 +96,11 @@ $(document).ready(function () {
     });
     // Hover over ToDo events
     $(document).on("mouseenter", "div.todo", function () {
-        $("div#" + this.id).append("<button class='remove-button'>Remove</button>");
+        $("div.todo#" + this.id).children("div.description").after("<button class='remove-button'>Remove</button>");
     });
 
     $(document).on("mouseleave", "div.todo", function () {
-        $("div#" + this.id).children().remove("button");
+        $("div.todo#" + this.id).children().remove("button");
     });
     // Remove button clicked event
     $(document).on("click", "button.remove-button", function () {
@@ -112,7 +112,7 @@ $(document).ready(function () {
             }
         }
         $("div.todo#" + currentId).remove();
-        // Aici trebuie sa scap de <hr> care raman dupa ce dau remove la un todo
+        $("div.todo#" + currentId + " +hr").remove();
         localStorage.setItem("addedToDos", JSON.stringify(addedToDos));
         setCounter();
     });
@@ -170,7 +170,7 @@ function addToDo() {
 
         $(".add-todo").before("<div class='todo' id='" + td.id + "'><input type='checkbox'><div class='description'>" +
             "<p class='todo-description'>" + td.description + "</p><hr><p class='time-added'>Added " +
-            moment(td.addedOn).fromNow() + "</p></div></div><hr>");
+            moment(td.addedOn).fromNow() + "</p></div><hr></div>");
         $("p.add-button").html("Double click to add");
         setCounter();
     }

@@ -77,6 +77,7 @@ input[type=checkbox] {
     display: inline-block;
     word-wrap: break-word;
     float: none;
+    height: auto;
 }
 
 p.time-added {
@@ -90,7 +91,7 @@ p.time-completed {
 }
 
 p.todo-description {
-    margin-top: -8px;
+
 }
 
 input.add {
