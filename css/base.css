@@ -1,0 +1,102 @@
+.round-corners {
+    border-radius: 25px;
+    border: 2px solid #73AD21;
+    padding: 15px;
+    width: 600px;
+    height: auto;
+    margin: auto;
+}
+
+.user-information {
+    height: auto;
+    width: auto;
+    margin: auto;
+    text-align: center;
+}
+
+.todo {
+    height: auto;
+    width: auto;
+    margin: auto;
+    text-align: left;
+    overflow: hidden;
+}
+
+.add-todo {
+    height: auto;
+    width: auto;
+    margin: auto;
+    text-align: center;
+}
+
+p.add-button {
+    color: darkcyan;
+}
+
+.counter {
+    display: flex;
+    height: auto;
+    width: auto;
+    margin: auto;
+    text-align: center;
+}
+
+input[type=checkbox] {
+    float: left;
+    width: 50px;
+    display: inline-block;
+}
+
+.to-be-done {
+    text-align: left;
+}
+
+.done {
+    text-align: right;
+    flex: 1;
+}
+
+.remove-button {
+    float: right;
+    height: 15px;
+    width: 50px;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 12px;
+}
+
+.description {
+    width: 480px;
+    display: inline-block;
+    word-wrap: break-word;
+    float: none;
+}
+
+p.time-added {
+    float: left;
+    font-size: 10px;
+}
+
+p.time-completed {
+    float: right;
+    font-size: 10px;
+}
+
+p.todo-description {
+    margin-top: -8px;
+}
+
+input.add {
+
+}
+
+input.edit-description {
+
+}
