@@ -1,33 +1,37 @@
 function Events() {
     var toDos = new ToDos();
+    var container = $(".round-corners");
+    var listContainer = container.find(".todo-list");
 
-    var loadToDos = function() {
+    var loadToDos = function () {
         $("div.user-information").append("<p>" + moment().format("MMM Do YYYY") + "</p>");
         setCounter();
         var addedToDos = toDos.getToDos();
 
         for (var index = addedToDos.length - 1; index >= 0; index--) {
             var currentToDo = addedToDos[index];
+            var addedOn = moment(currentToDo.addedOn).fromNow();
 
-            $(".counter").after("<div class='todo' id='" + currentToDo.id + "'>" +
-                "<input type='checkbox' /><div class='description'><p class='todo-description'>" +
-                currentToDo.description + "</p><hr><p class='time-added'>Added " +
-                moment(currentToDo.addedOn).fromNow() + "</p></div><hr></div>");
+            listContainer.append("<li class='todo-item' data-todo='" + currentToDo.id + "'><input type='checkbox' />" +
+                "<p class='todo-description'>" + currentToDo.description + "</p><hr><p class='time-added'>Added "
+                + addedOn + "</p></li>");
 
-            var toDoDiv = $("div#" + currentToDo.id);
+            var currentItemElement = listContainer.find('[data-todo=' + currentToDo.id + "]");
 
-            if (addedToDos[index].completed) {
-                toDoDiv.children("input[type=checkbox]").prop("checked", true);
-                toDoDiv.children("div.description").css("text-decoration", "line-through");
-                toDoDiv.children("div.description").append("<p class='time-completed'>Completed " +
-                    moment(currentToDo.completedOn).fromNow() +
-                    "</p>")
+            if (currentToDo.completed) {
+                currentItemElement.children('input[type=checkbox]').prop('checked', true);
+                currentItemElement.children('p.todo-description').css("text-decoration", "line-through");
+                currentItemElement.append("<p class='time-completed'>Completed " +
+                    moment(currentToDo.completedOn).fromNow() + "</p>");
             }
             else {
-                toDoDiv.children().prop("checked", false);
+                currentItemElement.children('input[type=checkbox]').prop('checked', false);
             }
+
+            currentItemElement.append('<hr>');
+
         }
-        $(".counter").after("<hr>");
+        container.find('.counter').after("<hr>");
     };
 
     var setCounter = function () {
@@ -51,25 +55,26 @@ function Events() {
             toBeDoneText = startTag + toBeDone + "</strong> item to be done";
         }
 
-        $("div.counter").children("div.to-be-done").html(toBeDoneText);
-        $("div.counter").children("div.done").html(doneText);
+        var counterDiv = container.find("div.counter");
+        counterDiv.children("div.to-be-done").html(toBeDoneText);
+        counterDiv.children("div.done").html(doneText);
     };
 
     var addToDo = function () {
-        var description = document.getElementById('description').value.trim();
+        var description = container.find('textarea.add-todo').val().trim();
         if (description.length > 0) {
             var td = new toDo();
             td.description = description;
             td.completed = false;
             td.addedOn = new Date().getTime();
             td.id = toDos.getLastId() + 1;
-
             toDos.addToDo(td);
 
-            $(".add-todo").before("<div class='todo' id='" + td.id + "'><input type='checkbox'><div class='description'>" +
-                "<p class='todo-description'>" + td.description + "</p><hr><p class='time-added'>Added " +
-                moment(td.addedOn).fromNow() + "</p></div><hr></div>");
-            $("p.add-button").html("Double click to add");
+            listContainer.prepend("<li class='todo-item' data-todo='" + td.id + "'><input type='checkbox' />" +
+                "<p class='todo-description'>" + td.description + "</p><hr><p class='time-added'>Added "
+                + moment(td.addedOn).fromNow() + "</p><hr></li>");
+
+            container.find("p.add-button").html("Double click to add");
             setCounter();
         }
         else {
@@ -77,8 +82,8 @@ function Events() {
         }
     };
 
-    var editToDo = function (editInput, toDoDiv) {
-        var toDoId = parseInt(toDoDiv.attr('id'));
+    var editToDo = function (editInput, listElement) {
+        var toDoId = parseInt(listElement.attr('data-todo'));
         var newDescription = editInput.val();
         if (newDescription.length > 0) {
             toDos.editToDo(toDoId, newDescription);
@@ -89,62 +94,61 @@ function Events() {
         }
     };
 
-    this.init = function() {
-        var container = $(".round-corners");
+    this.init = function () {
         loadToDos();
-        $("p.add-button").dblclick(function () {
-            $("p.add-button").html("<input id='description' class='add' type='text' placeholder='Enter description' " +
-                "/>");
+        container.find("p.add-button").dblclick(function () {
+            $(this).html("<textarea class='add-todo' type='text' placeholder='Enter description' " + "/>");
         });
 
-        container.on('keypress', 'input.add', function (ev) {
+        container.on('keypress', 'textarea.add-todo', function (ev) {
             if (ev.which === 13) {
-                $(document).off('blur', 'input.add');
+                container.off('blur', 'textarea.add-todo');
                 addToDo();
-                $(document).on('blur', "input.add", function () {
+                container.on('blur', "textarea.add-todo", function () {
                     addToDo();
                 });
             }
         });
 
-        container.on('blur', "input.add", function () {
+        container.on('blur', "textarea.add-todo", function () {
             addToDo();
         });
         // Edit ToDo events
-        $('div.round-corners').on('dblclick', 'p.todo-description', function () {
+        container.on('dblclick', 'p.todo-description', function () {
             var currentDiv = $(this);
             var currentDescription = currentDiv.text();
-            currentDiv.html("<input class='edit-description' value='" + currentDescription + "'/>");
+            currentDiv.html("<textarea class='edit-description' >" + currentDescription + "</textarea>");
         });
 
-        container.on('keypress', 'input.edit-description', function (ev) {
+        container.on('keypress', 'textarea.edit-description', function (ev) {
             if (ev.which === 13) {
-                $(document).off('blur', 'input.edit-description');
-                editToDo($(this), $(this).parent().parent().parent());
-                $(document).on('blur', "input.edit-description", function () {
-                    editToDo($(this), $(this).parent().parent().parent());
+                $(document).off('blur', 'textarea.edit-description');
+                editToDo($(this), $(this).parent().parent());
+                $(document).on('blur', "textarea.edit-description", function () {
+                    editToDo($(this), $(this).parent().parent());
                 });
             }
         });
 
-        container.on('blur', "input.edit-description", function () {
-            editToDo($(this), $(this).parent().parent().parent());
+        container.on('blur', "textarea.edit-description", function () {
+            editToDo($(this), $(this).parent().parent());
         });
         // Checkbox click event
         container.on("click", "input[type=checkbox]", function () {
-            var id = parseInt($(this).parent().attr("id"));
+            var id = parseInt($(this).parent().attr("data-todo"));
             var currentToDo = toDos.getToDoById(id);
+            var listElement = listContainer.find("[data-todo='" + id + "']");
 
             if (this.checked) {
                 toDos.setCompletion(id, true);
-                $("div.todo#" + id).children("div.description").css("text-decoration", "line-through");
-                $("div.todo#" + id).children("div.description").append("<p class='time-completed'>Completed " +
+                listElement.children("p.todo-description").css("text-decoration", "line-through");
+                listElement.children("p.time-added").after("<p class='time-completed'>Completed " +
                     moment(currentToDo.completedOn).fromNow() + "</p>")
             }
             else {
                 toDos.setCompletion(id, false);
-                $("div.todo#" + id).children("div.description").css("text-decoration", "none");
-                var timeCompletedTarget = $("div.todo#" + id).children("div.description").children("p.time-completed");
+                listElement.children("p.todo-description").css("text-decoration", "none");
+                var timeCompletedTarget = listElement.children("p.time-completed");
                 if (timeCompletedTarget) {
                     timeCompletedTarget.remove();
                 }
@@ -152,19 +156,21 @@ function Events() {
             setCounter();
         });
         // Hover over ToDo events
-        container.on("mouseenter", "div.todo", function () {
-            $("div.todo#" + this.id).children("div.description").after("<button class='remove-button'>Remove</button>");
+        container.on("mouseenter", "[data-todo]", function () {
+            if ($(this).children('button.remove-button').length == 0) {
+                $(this).prepend("<button class='remove-button'>Remove</button>");
+            }
         });
 
-        container.on("mouseleave", "div.todo", function () {
-            $("div.todo#" + this.id).children().remove("button");
+        container.on("mouseleave", "[data-todo]", function () {
+            $(this).children().remove("button");
         });
         // Remove button clicked event
         container.on("click", "button.remove-button", function () {
-            var currentId = parseInt($(this).parent().attr("id"));
+            var currentId = parseInt($(this).parent().attr("data-todo"));
+            console.log(currentId);
             toDos.removeToDo(currentId);
-            $("div.todo#" + currentId).remove();
-            $("div.todo#" + currentId + " +hr").remove();
+            $(this).parent().remove();
             setCounter();
         });
     }

@@ -14,37 +14,12 @@
     text-align: center;
 }
 
-.todo {
-    height: auto;
-    width: auto;
-    margin: auto;
-    text-align: left;
-    overflow: hidden;
-}
-
-.add-todo {
-    height: auto;
-    width: auto;
-    margin: auto;
-    text-align: center;
-}
-
-p.add-button {
-    color: darkcyan;
-}
-
 .counter {
     display: flex;
     height: auto;
     width: auto;
     margin: auto;
     text-align: center;
-}
-
-input[type=checkbox] {
-    float: left;
-    width: 50px;
-    display: inline-block;
 }
 
 .to-be-done {
@@ -54,6 +29,31 @@ input[type=checkbox] {
 .done {
     text-align: right;
     flex: 1;
+}
+
+.add-todo {
+    min-height: 50px;
+    width: 480px;
+    margin: auto;
+}
+
+.edit-description {
+    width: 480px;
+    margin: auto;
+    min-height: 50px;
+}
+
+p.add-button {
+    color: darkcyan;
+    text-align: center;
+    height: auto;
+}
+
+input[type=checkbox] {
+    float: left;
+    width: 50px;
+    display: inline-block;
+    margin-top: 17px;
 }
 
 .remove-button {
@@ -67,22 +67,15 @@ input[type=checkbox] {
     text-decoration: none;
     display: inline-block;
     font-size: 10px;
-    margin: 4px 2px;
+    margin: 6px 2px;
     cursor: pointer;
     border-radius: 12px;
-}
-
-.description {
-    width: 480px;
-    display: inline-block;
-    word-wrap: break-word;
-    float: none;
-    height: auto;
 }
 
 p.time-added {
     float: left;
     font-size: 10px;
+    display: block;
 }
 
 p.time-completed {
@@ -91,13 +84,26 @@ p.time-completed {
 }
 
 p.todo-description {
-
+    width: 480px;
+    display: inline-block;
+    word-wrap: break-word;
+    float: none;
+    height: auto;
 }
 
-input.add {
-
+.todo-list {
+    padding: 0;
+    list-style-type: none;
 }
 
-input.edit-description {
+.todo-item {
+    height: auto;
+    width: auto;
+    margin: auto;
+    text-align: left;
+    overflow: hidden;
+}
 
+hr {
+    clear: both;
 }
