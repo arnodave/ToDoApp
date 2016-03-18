@@ -168,7 +168,6 @@ function Events() {
         // Remove button clicked event
         container.on("click", "button.remove-button", function () {
             var currentId = parseInt($(this).parent().attr("data-todo"));
-            console.log(currentId);
             toDos.removeToDo(currentId);
             $(this).parent().remove();
             setCounter();
