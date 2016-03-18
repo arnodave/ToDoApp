@@ -71,7 +71,8 @@ function Events() {
             td.id = toDos.getLastId() + 1;
             toDos.addToDo(td);
 
-            listContainer.prepend("<li class='todo-item' data-todo='" + td.id + "'><input type='checkbox' />" +
+            listContainer.prepend("<li class='todo-item' data-todo='" + td.id + "'>" +
+                "<button class='remove-button'>Remove</button><input type='checkbox' />" +
                 "<p class='todo-description'>" + td.description + "</p><hr><p class='time-added'>Added "
                 + moment(td.addedOn).fromNow() + "</p><hr></li>");
 
