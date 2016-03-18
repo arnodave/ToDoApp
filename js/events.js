@@ -12,7 +12,8 @@ function Events() {
             var currentToDo = addedToDos[index];
             var addedOn = moment(currentToDo.addedOn).fromNow();
 
-            listContainer.append("<li class='todo-item' data-todo='" + currentToDo.id + "'><input type='checkbox' />" +
+            listContainer.append("<li class='todo-item' data-todo='" + currentToDo.id + "'>" +
+                "<button class='remove-button'>Remove</button><input type='checkbox' />" +
                 "<p class='todo-description'>" + currentToDo.description + "</p><hr><p class='time-added'>Added "
                 + addedOn + "</p></li>");
 
@@ -155,16 +156,7 @@ function Events() {
             }
             setCounter();
         });
-        // Hover over ToDo events
-        container.on("mouseenter", "[data-todo]", function () {
-            if ($(this).children('button.remove-button').length == 0) {
-                $(this).prepend("<button class='remove-button'>Remove</button>");
-            }
-        });
 
-        container.on("mouseleave", "[data-todo]", function () {
-            $(this).children().remove("button");
-        });
         // Remove button clicked event
         container.on("click", "button.remove-button", function () {
             var currentId = parseInt($(this).parent().attr("data-todo"));
