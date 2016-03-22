@@ -7,31 +7,29 @@ function Events() {
         $("div.user-information").append("<p>" + moment().format("MMM Do YYYY") + "</p>");
         setCounter();
         var addedToDos = toDos.getToDos();
+        var toDosContainer = jQuery("<div></div>");
 
         for (var index = addedToDos.length - 1; index >= 0; index--) {
             var currentToDo = addedToDos[index];
             var addedOn = moment(currentToDo.addedOn).fromNow();
 
-            listContainer.append("<li class='todo-item' data-todo='" + currentToDo.id + "'>" +
+            var currentItemElement = jQuery("<li class='todo-item' data-todo='" + currentToDo.id + "'>" +
                 "<button class='remove-button'>Remove</button><input type='checkbox' />" +
                 "<p class='todo-description'>" + currentToDo.description + "</p><hr><p class='time-added'>Added "
                 + addedOn + "</p></li>");
 
-            var currentItemElement = listContainer.find('[data-todo=' + currentToDo.id + "]");
-
             if (currentToDo.completed) {
-                currentItemElement.children('input[type=checkbox]').prop('checked', true);
+                currentItemElement.children('input[type=checkbox]').attr('checked', true);
                 currentItemElement.children('p.todo-description').css("text-decoration", "line-through");
                 currentItemElement.append("<p class='time-completed'>Completed " +
                     moment(currentToDo.completedOn).fromNow() + "</p>");
             }
-            else {
-                currentItemElement.children('input[type=checkbox]').prop('checked', false);
-            }
 
             currentItemElement.append('<hr>');
+            toDosContainer.append(currentItemElement);
 
         }
+        listContainer.html(toDosContainer.html());
         container.find('.counter').after("<hr>");
     };
 
