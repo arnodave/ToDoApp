@@ -2,35 +2,14 @@ function Events() {
     var toDos = new ToDos();
     var container = $(".round-corners");
     var listContainer = container.find(".todo-list");
+    var toDosTemplate = _.template($("#to-do-item-template").html());
 
     var loadToDos = function () {
         $("div.user-information").append("<p>" + moment().format("MMM Do YYYY") + "</p>");
         setCounter();
-        var addedToDos = toDos.getToDos();
-        var toDosContainer = jQuery("<div></div>");
-
-        for (var index = addedToDos.length - 1; index >= 0; index--) {
-            var currentToDo = addedToDos[index];
-            var addedOn = moment(currentToDo.addedOn).fromNow();
-
-            var currentItemElement = jQuery("<li class='todo-item' data-todo='" + currentToDo.id + "'>" +
-                "<button class='remove-button'>Remove</button><input type='checkbox' />" +
-                "<p class='todo-description'>" + currentToDo.description + "</p><hr><p class='time-added'>Added "
-                + addedOn + "</p></li>");
-
-            if (currentToDo.completed) {
-                currentItemElement.children('input[type=checkbox]').attr('checked', true);
-                currentItemElement.children('p.todo-description').css("text-decoration", "line-through");
-                currentItemElement.append("<p class='time-completed'>Completed " +
-                    moment(currentToDo.completedOn).fromNow() + "</p>");
-            }
-
-            currentItemElement.append('<hr>');
-            toDosContainer.append(currentItemElement);
-
-        }
-        listContainer.html(toDosContainer.html());
-        container.find('.counter').after("<hr>");
+        var reversedToDos = toDos.getToDos().slice().reverse();
+        var resultingHtml = toDosTemplate({toDos: reversedToDos});
+        listContainer.html(resultingHtml);
     };
 
     var setCounter = function () {
@@ -69,10 +48,8 @@ function Events() {
             td.id = toDos.getLastId() + 1;
             toDos.addToDo(td);
 
-            listContainer.prepend("<li class='todo-item' data-todo='" + td.id + "'>" +
-                "<button class='remove-button'>Remove</button><input type='checkbox' />" +
-                "<p class='todo-description'>" + td.description + "</p><hr><p class='time-added'>Added "
-                + moment(td.addedOn).fromNow() + "</p><hr></li>");
+            var resultingHtml = toDosTemplate({toDos: [td]});
+            listContainer.prepend(resultingHtml);
 
             container.find("p.add-button").html("Double click to add");
             setCounter();
@@ -164,4 +141,5 @@ function Events() {
             setCounter();
         });
     }
+
 }
