@@ -19,27 +19,12 @@ function Events() {
     var setCounter = function () {
         var done = toDos.getNumberOfCompletedToDos();
         var toBeDone = toDos.getNumberOfToDos() - done;
-        var startTag = "<strong>";
-
-        var doneText;
-        if (done != 1) {
-            doneText = startTag + done + "</strong> items completed";
-        }
-        else {
-            doneText = startTag + done + "</strong> item completed";
-        }
-
-        var toBeDoneText;
-        if (toBeDone != 1) {
-            toBeDoneText = startTag + toBeDone + "</strong> items to be done";
-        }
-        else {
-            toBeDoneText = startTag + toBeDone + "</strong> item to be done";
-        }
-
-        var counterDiv = container.find("div.counter");
-        counterDiv.children("div.to-be-done").html(toBeDoneText);
-        counterDiv.children("div.done").html(doneText);
+        var template = new CollectionView({
+            items: [{done: done, toBeDone: toBeDone}],
+            template: '#counter-template',
+            childContentContainer: '.counter'
+        });
+        template.render();
     };
 
     var addToDo = function () {
@@ -57,7 +42,7 @@ function Events() {
                 template: '#to-do-item-template',
                 childContentContainer: '.todo-list'
             });
-            template.render();
+            template.render("prepend");
 
             container.find("p.add-button").html("Double click to add");
             setCounter();

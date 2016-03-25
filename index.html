@@ -13,8 +13,6 @@
     <div class="user-information">To-do list for Arnold</div>
     <hr>
     <div class="counter">
-        <div class="to-be-done"></div>
-        <div class="done"></div>
     </div>
     <hr>
     <ul class="todo-list"></ul>
@@ -34,6 +32,14 @@
         }%>
         <hr>
     </li>
+</script>
+<script type="text/template" id="counter-template">
+    <div class="to-be-done"><strong><%print(toBeDone)%></strong><%if(toBeDone!=1){print(" items to be done")}
+        else {print(" item to be done")} %>
+    </div>
+    <div class="done"><strong><%print(done)%></strong><%if(done!=1){print(" items completed")}
+        else {print(" item completed")} %>
+    </div>
 </script>
 <script src="js/todo.js"></script>
 <script src="js/todos.js"></script>
