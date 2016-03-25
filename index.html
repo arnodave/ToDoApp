@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>To-Do App</title>
     <link rel="stylesheet" type="text/css" href="./css/base.css">
-    <script src="https://code.jquery.com/jquery-2.2.1.js"></script>
+    <script src="./js/jquery-2.2.1.js"></script>
     <script src="./js/underscore.js"></script>
     <script src="./js/moment.min.js"></script>
 </head>
@@ -21,24 +21,23 @@
     <p class="add-button">Double click to add</p>
 </div>
 <script type="text/template" id="to-do-item-template">
-    <% _.each(toDos, function(toDo) { %>
-    <li class='todo-item' data-todo='<%= toDo.id %>'>
+    <li class='todo-item' data-todo='<%print(id);%>'>
         <button class='remove-button'>Remove</button>
-        <input type="checkbox" <% if(toDo.completed) {print('checked="checked"');}
+        <input type="checkbox" <% if(completed) {print('checked="checked"');}
         else{print('')}%>/>
-        <p class='todo-description' style="text-decoration:<% if(toDo.completed){print('line-through');}%> "
-        ><%= toDo.description %></p>
+        <p class='todo-description' style="text-decoration:<% if(completed){print('line-through');}%> "
+        ><%= description %></p>
         <hr>
-        <p class='time-added'>Added <% print(moment(toDo.addedOn).fromNow()); %></p>
-        <% if(toDo.completed) {
-        print("<p class='time-completed'>Completed " + moment(toDo.completedOn).fromNow());
+        <p class='time-added'>Added <% print(moment(addedOn).fromNow()); %></p>
+        <% if(completed) {
+        print("<p class='time-completed'>Completed " + moment(completedOn).fromNow());
         }%>
         <hr>
     </li>
-    <% }); %>
 </script>
 <script src="js/todo.js"></script>
 <script src="js/todos.js"></script>
+<script src="js/collection-view.js"></script>
 <script src="js/events.js"></script>
 <script src="js/start.js"></script>
 </body>

@@ -8,8 +8,12 @@ function Events() {
         $("div.user-information").append("<p>" + moment().format("MMM Do YYYY") + "</p>");
         setCounter();
         var reversedToDos = toDos.getToDos().slice().reverse();
-        var resultingHtml = toDosTemplate({toDos: reversedToDos});
-        listContainer.html(resultingHtml);
+        var template = new CollectionView({
+            items: reversedToDos,
+            template: '#to-do-item-template',
+            childContentContainer: '.todo-list'
+        });
+        template.render();
     };
 
     var setCounter = function () {
@@ -48,8 +52,12 @@ function Events() {
             td.id = toDos.getLastId() + 1;
             toDos.addToDo(td);
 
-            var resultingHtml = toDosTemplate({toDos: [td]});
-            listContainer.prepend(resultingHtml);
+            var template = new CollectionView({
+                items: [td],
+                template: '#to-do-item-template',
+                childContentContainer: '.todo-list'
+            });
+            template.render();
 
             container.find("p.add-button").html("Double click to add");
             setCounter();
