@@ -1,5 +1,6 @@
 function ToDos() {
-    var addedToDos = JSON.parse(localStorage.getItem("addedToDos"));
+    var addedToDos = localStorage.getItem("addedToDos");
+    addedToDos = addedToDos != undefined ? JSON.parse(addedToDos) : [];
 
     this.setCompletion = function (id, completed) {
         var td = this.getToDoById(id);
